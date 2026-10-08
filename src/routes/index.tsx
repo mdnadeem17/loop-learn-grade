@@ -93,7 +93,7 @@ function Index() {
                 </Button>
               </div>
               <div className="mt-8 flex justify-center">
-                <Button variant="ghost" onClick={() => setStep("upload")}>
+                <Button variant="ghost" onClick={reset}>
                   <RotateCcw className="mr-2 h-4 w-4" /> Start Over
                 </Button>
               </div>
