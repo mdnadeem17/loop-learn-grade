@@ -132,13 +132,34 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+:root {
+  --surface: oklch(0.985 0 0);
+  --mistake: oklch(0.577 0.245 27.325);
+  --mistake-soft: oklch(0.971 0.013 17.38);
+  --fix: oklch(0.508 0.118 165.612);
+  --fix-soft: oklch(0.979 0.021 166.113);
+  --warn: oklch(0.476 0.114 61.907);
+  --warn-soft: oklch(0.973 0.071 103.193);
+}
+@theme inline {
+  --color-surface: var(--surface);
+  --color-mistake: var(--mistake);
+  --color-mistake-soft: var(--mistake-soft);
+  --color-fix: var(--fix);
+  --color-fix-soft: var(--fix-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
   }
 
   body {
-    background-color: var(--color-background);
+    background-color: var(--color-surface);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
   }
 }
