@@ -1,23 +1,54 @@
 import { useRef, useState } from "react";
-import { FileText, Loader2, Upload } from "lucide-react";
+import { FileText, Loader2, Upload, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export function UploadView({ onAnalyze }: { onAnalyze: () => void }) {
+export function UploadView({ onAnalyze }: { onAnalyze: (base64?: string, mimeType?: string) => Promise<void> }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [drag, setDrag] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const analyze = () => {
+  const analyze = async () => {
     setLoading(true);
-    setTimeout(onAnalyze, 1500);
+    try {
+      if (!file) {
+        // Mock latency
+        await new Promise(r => setTimeout(r, 1500));
+        await onAnalyze();
+        return;
+      }
+      
+      const reader = new FileReader();
+      const base64Promise = new Promise<void>((resolve, reject) => {
+        reader.onloadend = async () => {
+          try {
+            const result = reader.result as string;
+            const mimeType = result.substring(result.indexOf(":") + 1, result.indexOf(";"));
+            const base64String = result.split(',')[1];
+            await onAnalyze(base64String, mimeType);
+            resolve();
+          } catch (e) {
+            reject(e);
+          }
+        };
+        reader.onerror = reject;
+      });
+      
+      reader.readAsDataURL(file);
+      await base64Promise;
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div>
+
       <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl">Upload Your Answer Sheet</h1>
       <p className="mt-3 text-lg text-muted-foreground">
-        Our AI will analyze your work and generate custom remediation flashcards.
+        Cognify will analyze your work and generate custom remediation flashcards.
       </p>
       <div
         onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
