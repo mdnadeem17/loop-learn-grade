@@ -55,6 +55,7 @@ function Index() {
     setIsFlipped(false);
     setCurrentCardIndex((i) => Math.min(CARDS.length - 1, Math.max(0, i + d)));
   };
+  const card = CARDS[currentCardIndex]!;
   const reset = () => { setStep("upload"); setCurrentCardIndex(0); setIsFlipped(false); };
   return (
     <div className="min-h-screen">
@@ -78,8 +79,8 @@ function Index() {
               </p>
               <div className="mt-10">
                 <AnimatePresence mode="wait">
-                  <motion.div key={CARDS[currentCardIndex].id} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.25 }}>
-                    <FlipCard card={CARDS[currentCardIndex]} isFlipped={isFlipped} onFlip={() => setIsFlipped((f) => !f)} />
+                  <motion.div key={card.id} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.25 }}>
+                    <FlipCard card={card} isFlipped={isFlipped} onFlip={() => setIsFlipped((f) => !f)} />
                   </motion.div>
                 </AnimatePresence>
               </div>
